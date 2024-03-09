@@ -1,26 +1,66 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <RefillInput
+      :reeeefills="reeeeefills"
+      @add-refill="addRefill"
+      @calculate-impact="calculateImpact"
+    />
+    <ImpactDisplay
+      :bottles-saved="bottlesSaved"
+      :plastic-saved="plasticSaved"
+      :carbon-saved="carbonSaved"
+      :co2-emissions="co2Emissions"
+      :impact-calculated="impactCalculated"
+    />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import RefillInput from './RefillInput.vue';
+import ImpactDisplay from './ImpactDisplay.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
-}
+    RefillInput,
+    ImpactDisplay,
+  },
+  data() {
+    return {
+      reeeefills: 2,
+      currentRefills: 2,
+      impactCalculated: false,
+    };
+  },
+  computed: {
+    bottlesSaved() {
+      return this.currentRefills * 2;
+    },
+    plasticSaved() {
+      return (this.bottlesSaved * 0.012).toFixed(2);
+    },
+    carbonSaved() {
+      return (this.bottlesSaved * 0.08).toFixed(2);
+    },
+    co2Emissions() {
+      return (this.carbonSaved / 0.08).toFixed(0);
+    },
+  },
+  methods: {
+    addRefill() {
+      this.currentRefills++;
+    },
+    calculateImpact() {
+      this.impactCalculated = true;
+    },
+  },
+};
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: Arial, sans-serif;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  padding: 2rem;
 }
 </style>
